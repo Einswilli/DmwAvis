@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'avis'
 ]
 
 MIDDLEWARE = [
@@ -118,8 +119,26 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIR=[
+    BASE_DIR/'static',
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+MEDIA_ROOT=os.path.join(BASE_DIR/"images")
+MEDIA_URL='/images/'
+
+#E-MAIL SETTINGS
+
+#https://accounts.google.com/b/0/DisplayUnlockCaptcha
+#https://myaccount.google.com/lesssecureapps
+#https://myaccount.google.com/apppasswords
+
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_PORT='587'
+EMAIL_HOST_USER='titivi00228@gmail.com'
+EMAIL_HOST_PASSWORD= 'ypnyuankmubjhjix' #'Admintitivi228'
+EMAIL_USE_TLS=True
+#EMAIL_USE_SSL=False
