@@ -21,7 +21,7 @@
       </div>
       <!-- end sidebar toggle -->
 
-      <p class="uppercase text-xs text-gray-600 mb-4 mt-4 tracking-wider">Menu</p>
+      <p class="uppercase text-xs text-gray-600 mb-4 mt-4 tracking-wider">TABLEAU DE BORD</p>
 
       <!-- link -->
       {% comment %} <a href="/accounts" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
@@ -51,6 +51,7 @@
       </a>
       <!-- end link -->
 
+      {% if  'ALL' in request.session.user.type.acces %}
       <!-- link -->
       <a href="/users" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
         <i class="fad fa-file-invoice-dollar text-xs mr-2"></i>
@@ -64,6 +65,7 @@
         file manager
       </a>
       <!-- end link -->   
+      {% endif %}
 
     </div>
     <!-- end sidebar content -->
@@ -96,8 +98,8 @@
 
                 <!-- bottom -->
                 <div class="mt-8">
-                    <h1 class="h5 num-4"></h1>
-                    <p>items sales</p>
+                    <h1 class="h5 ">{{unassigned_texts|length}}</h1>
+                    <p>Nouveau Textes</p>
                 </div>                
                 <!-- end bottom -->
     
@@ -125,8 +127,8 @@
 
                 <!-- bottom -->
                 <div class="mt-8">
-                    <h1 class="h5 num-4"></h1>
-                    <p>new orders</p>
+                    <h2 class="">{{current_session.code}}</h2>
+                    <p>Session active</p>
                 </div>                
                 <!-- end bottom -->
     
@@ -154,8 +156,8 @@
 
                 <!-- bottom -->
                 <div class="mt-8">
-                    <h1 class="h5 num-4"></h1>
-                    <p>total Products</p>
+                    <h1 class="h5 ">{{posts|length}}</h1>
+                    <p>Postes</p>
                 </div>                
                 <!-- end bottom -->
     
@@ -183,8 +185,8 @@
 
                 <!-- bottom -->
                 <div class="mt-8">
-                    <h1 class="h5 num-4"></h1>
-                    <p>new Visitor</p>
+                    <h1 class="h5 ">{{posters|length}}</h1>
+                    <p>Posteurs</p>
                 </div>                
                 <!-- end bottom -->
     

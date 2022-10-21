@@ -12,7 +12,7 @@ from dateutil.relativedelta import relativedelta
 ########
 class Session(models.Model):
     id=models.AutoField(primary_key=True)
-    code=models.CharField(max_length=20,default=ObjectId)
+    code=models.CharField(max_length=50,default=str(ObjectId()))
     isActive=models.BooleanField(default=True)
     startDate=models.DateField(default=datetime.date.today())
     endDate=models.DateField(default=datetime.date.today()+relativedelta(days=int(7)))

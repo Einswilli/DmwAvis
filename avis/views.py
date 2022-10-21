@@ -47,6 +47,7 @@ def get_objects(request):
         'accounts':Account.objects.all(),
         'texts':Content.objects.all(),
         'usertypes':UserType.objects.all(),
+        'posters':User.objects.filter(type=1),
         'unassigned_texts':Content.objects.filter(isUsed=False),
         'unassigned_accounts':Account.objects.filter(isOccupy=False),
         'current_session':Session.objects.all().order_by('-startDate').first(),
@@ -97,6 +98,9 @@ def login(request):
     except:return render(request,'index.html',{'msg':'E-mail ou mot de passe invalide!'})
 
 def dashboard(request):
+    Session.objects.create(
+        startDate=datetime.date.today()
+    )
     return render(request,'dashboard/index.html',get_objects(request))
 
 def acounts(request):
