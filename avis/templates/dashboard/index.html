@@ -1,6 +1,7 @@
 <!-- start navbar -->
 {% extends 'dashboard/base.html' %}
-
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}">
 {% block content %}
   <!-- strat wrapper -->
   <div class="h-screen flex flex-row flex-wrap">
@@ -208,13 +209,13 @@
 
         {% for tx in unassigned_texts %}
         <!-- brawser -->
-        <div class="p-6 flex flex-row justify-between items-center text-gray-600 border-b">
+        <div class="p-6 flex flex-row justify-between items-center text-gray-600 border-b" id="par{{tx.id}}">
             <div class="flex items-center">
-                <i class="fab fa-file mr-4"></i>    
+                <i class="fa fa-file-text mr-4"></i>    
                 <h1>{{ tx.truncate }}</h1>
             </div>                
             <div>
-                <a class="num-2 btn btn-success">prendre</a>
+                <button class=" btn btn-success bta" id="bta{{tx.id}}">Ajouter</button>
             </div>
         </div>
         <!-- end brawser -->
@@ -230,50 +231,22 @@
         <table class="table-auto w-full text-left">
             <thead>
                 <tr>
-                    <th class="px-4 py-2 border-r"></th>
-                    <th class="px-4 py-2 border-r">product</th>
-                    <th class="px-4 py-2 border-r">price</th>
-                    <th class="px-4 py-2">date</th>
+                    <th class="px-4 py-2 border-r">Nom</th>
+                    <th class="px-4 py-2 border-r">Email</th>
+                    <th class="px-4 py-2 border-r">Pays</th>
+                    <th class="px-4 py-2 border-r">Etat</th>
                 </tr>
             </thead>
             <tbody class="text-gray-600">
 
-                <tr>                    
-                    <td class="border border-l-0 px-4 py-2 text-center text-green-500"><i class="fad fa-circle"></i></td>
-                    <td class="border border-l-0 px-4 py-2">Lightning to USB-C Adapter Lightning.</td>
-                    <td class="border border-l-0 px-4 py-2">$<span class="num-2"></span></td>
-                    <td class="border border-l-0 border-r-0 px-4 py-2"><span class="num-2"></span> minutes ago</td>
-                </tr>
-                <tr>                    
-                    <td class="border border-l-0 px-4 py-2 text-center text-yellow-500"><i class="fad fa-circle"></i></td>
-                    <td class="border border-l-0 px-4 py-2">Apple iPhone 8.</td>
-                    <td class="border border-l-0 px-4 py-2">$<span class="num-2"></span></td>
-                    <td class="border border-l-0 border-r-0 px-4 py-2"><span class="num-2"></span> minutes ago</td>
-                </tr>
-                <tr>                    
-                    <td class="border border-l-0 px-4 py-2 text-center text-green-500"><i class="fad fa-circle"></i></td>
-                    <td class="border border-l-0 px-4 py-2">Apple MacBook Pro.</td>
-                    <td class="border border-l-0 px-4 py-2">$<span class="num-2"></span></td>
-                    <td class="border border-l-0 border-r-0 px-4 py-2"><span class="num-2"></span> minutes ago</td>
-                </tr>
-                <tr>                    
-                    <td class="border border-l-0 px-4 py-2 text-center text-red-500"><i class="fad fa-circle"></i></td>
-                    <td class="border border-l-0 px-4 py-2">Samsung Galaxy S9.</td>
-                    <td class="border border-l-0 px-4 py-2">$<span class="num-2"></span></td>
-                    <td class="border border-l-0 border-r-0 px-4 py-2"><span class="num-2"></span> minutes ago</td>
-                </tr>
-                <tr>                    
-                    <td class="border border-l-0 px-4 py-2 text-center text-yellow-500"><i class="fad fa-circle"></i></td>
-                    <td class="border border-l-0 px-4 py-2">Samsung Galaxy S8 256GB.</td>
-                    <td class="border border-l-0 px-4 py-2">$<span class="num-2"></span></td>
-                    <td class="border border-l-0 border-r-0 px-4 py-2"><span class="num-2"></span> minutes ago</td>
-                </tr>
-                <tr>                    
-                    <td class="border border-l-0 border-b-0 px-4 py-2 text-center text-green-500"><i class="fad fa-circle"></i></td>
-                    <td class="border border-l-0 border-b-0 px-4 py-2">apple watch.</td>
-                    <td class="border border-l-0 border-b-0 px-4 py-2">$<span class="num-2"></span></td>
-                    <td class="border border-l-0 border-b-0 border-r-0 px-4 py-2"><span class="num-2"></span> minutes ago</td>
-                </tr>
+                {% for tx in unassigned_accounts %}
+                    <tr id="btcp{{tx.id}}">                    
+                        <td class="border border-l-0 px-4 py-2">{{ tx.fullName }}</td>
+                        <td class="border border-l-0 px-4 py-2">{{tx.email}}<span class="num-2"></span></td>
+                        <td class="border border-l-0 border-r-1 px-4 py-2"><span class="num-2"></span> {{ tx.country }}</td>
+                        <td class="border border-l-0 px-4 py-2 text-center" style="width:150px"><a class="btn btn-success btc" id='btc{{tx.id}}' style="width:100px">Ajouter</a></td>
+                    </tr>
+                {% endfor %}
                 
             </tbody>
         </table>
@@ -290,4 +263,39 @@
 
 </div>
 <!-- end wrapper -->
+<script src="{% static 'assets/js/jquery.js' %}"></script>
+<script>
+    var bts=document.querySelectorAll('.bta')
+    var btcs=document.querySelectorAll('.btc')
+    for(let item of bts){
+        item.addEventListener('click',function(){
+            $.ajax({
+                type:"POST",
+                url: "/contents/add/",
+                data:{
+                        id: item.id.replace('bta','')
+                },
+                success: function( data ){
+                    console.log(data);
+                    $('#par'+item.id.replace('bta','')).remove()
+                }
+            })
+        })
+    }
+    for(let item of btcs){
+        item.addEventListener('click',function(){
+            $.ajax({
+                type:"POST",
+                url: "/account/add/",
+                data:{
+                        id: item.id.replace('btc','')
+                },
+                success: function( data ){
+                    console.log(data);
+                    $('#btcp'+item.id.replace('btc','')).remove()
+                }
+            })
+        })
+    }
+</script>
 {% endblock content %}

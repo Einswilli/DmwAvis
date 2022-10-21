@@ -1,5 +1,7 @@
+from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from .models import *
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
@@ -42,7 +44,7 @@ def get_objects(request):
     return{
         'users':User.objects.all(),
         'posts':Post.objects.all(),
-        'account':Account.objects.all(),
+        'accounts':Account.objects.all(),
         'texts':Content.objects.all(),
         'usertypes':UserType.objects.all(),
         'unassigned_texts':Content.objects.filter(isUsed=False),
@@ -100,6 +102,8 @@ def dashboard(request):
 def acounts(request):
     return render(request,'dashboard/comptes.html',get_objects(request))
 
+############################    CONTENTS
+
 def contents(request):
     return render(request,'dashboard/textes.html',get_objects(request))
 
@@ -111,5 +115,27 @@ def save_content(request):
     )
     return redirect('contents')
 
+@csrf_exempt
+def assign_content(request):
+    c=Content.objects.get(id=int(request.POST.get('id')))
+    c.assignTo(request.session['user']['id'])
+    return HttpResponse("ok")
+
+
+####################    ACCOUNTS
+
+def account_save(request):
+    Account.objects.create(
+        fullName=request.POST.get('fullname'),
+        passwd=request.POST.get('passwd'),
+        country=request.POST.get('country'),
+    )
+    return redirect('accounts')
+
+@csrf_exempt
+def assign_account(request):
+    a=Account.objects.get(id=int(request.POST.get('id')))
+    a.assign_user(request.session['user']['id'])
+    return HttpResponse("ok")
 
 

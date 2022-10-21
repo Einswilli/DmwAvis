@@ -38,9 +38,10 @@ class Content(models.Model):
     def assignTo(self,id):
         self.user=User.objects.get(id=id)
         self.isUsed=True
+        self.save()
 
     def truncate(self):
-        return self.ContentText[0-80]+'...' if len(self.ContentText)>80 else self.ContentText
+        return self.ContentText[0:80]+'...' if len(self.ContentText)>80 else self.ContentText
 
 
 ########
@@ -81,6 +82,7 @@ class Account(models.Model):
     def assign_user(self,id):
         self.assignedTo=User.objects.get(id=id)
         self.isOccupy=True
+        self.save()
 
 
 ########

@@ -51,6 +51,7 @@
       </a>
       <!-- end link -->
 
+      {% if  'ALL' in request.session.user.type.acces %}
       <!-- link -->
       <a href="/users" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
         <i class="fad fa-file-invoice-dollar text-xs mr-2"></i>
@@ -64,6 +65,7 @@
         file manager
       </a>
       <!-- end link -->   
+      {% endif %}
 
     </div>
     <!-- end sidebar content -->
@@ -205,6 +207,7 @@
 
 
     <!-- Browser Stats -->
+    {% if  'POST' not in request.session.user.type.acces %}
     <div class="card">
         <div class="card-header">Nouveau Texte </div>
 
@@ -243,10 +246,11 @@
         </div>
 
     </div>
+    {% endif %}
     <!-- end Browser Stats -->
 
     <!-- Start Recent Sales -->
-    <div class="card col-span-2 xl:col-span-1">
+    <div class="card col-span-{% if  'POST' not in request.session.user.type.acces %}2{% else %}3{% endif %} xl:col-span-1">
         <div class="card-header">Liste des textes</div>
 
         <table class="table-auto w-full text-left">
@@ -259,14 +263,25 @@
                 </tr>
             </thead>
             <tbody class="text-gray-600">
-                {% for tx in texts %}
-                <tr>                    
-                    <td class="border border-l-0 px-4 py-2 text-center text-{% if tx.isUsed %}red{% else %}green{% endif %}-500"><i class="fad fa-circle"></i></td>
-                    <td class="border border-l-0 px-4 py-2">{{ tx.truncate }}</td>
-                    <td class="border border-l-0 px-4 py-2">{{tx.stars}}<span class="num-2"></span></td>
-                    <td class="border border-l-0 border-r-0 px-4 py-2"><span class="num-2"></span> minutes ago</td>
-                </tr>
-                {% endfor %}
+                {% if 'POST' in request.session.user.type.acces %}
+                    {% for tx in user_texts %}
+                    <tr>                    
+                        <td class="border border-l-0 px-4 py-2 text-center text-{% if tx.isUsed %}red{% else %}green{% endif %}-500"><i class="fad fa-circle"></i></td>
+                        <td class="border border-l-0 px-4 py-2">{{ tx.ContentText }}</td>
+                        <td class="border border-l-0 px-4 py-2">{{tx.stars}}<span class=""></span></td>
+                        <td class="border border-l-0 border-r-0 px-4 py-2"><span class=""></span> minutes ago</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    {% for tx in texts %}
+                    <tr>                    
+                        <td class="border border-l-0 px-4 py-2 text-center text-{% if tx.isUsed %}red{% else %}green{% endif %}-500"><i class="fad fa-circle"></i></td>
+                        <td class="border border-l-0 px-4 py-2">{{ tx.truncate }}</td>
+                        <td class="border border-l-0 px-4 py-2">{{tx.stars}}<span class=""></span></td>
+                        <td class="border border-l-0 border-r-0 px-4 py-2"><span class=""></span> minutes ago</td>
+                    </tr>
+                    {% endfor %}
+                {% endif %}
                 
             </tbody>
         </table>

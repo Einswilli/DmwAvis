@@ -1,6 +1,7 @@
 <!-- start navbar -->
 {% extends 'dashboard/base.html' %}
-
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}">
 {% block content %}
   <!-- strat wrapper -->
   <div class="h-screen flex flex-row flex-wrap">
@@ -49,7 +50,7 @@
         Postes
       </a>
       <!-- end link -->
-
+      {% if  'ALL' in request.session.user.type.acces %}
       <!-- link -->
       <a href="/users" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
         <i class="fad fa-file-invoice-dollar text-xs mr-2"></i>
@@ -58,11 +59,12 @@
       <!-- end link -->
 
       <!-- link -->
-      <a href="#" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
+      <a href="#" class=" capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
         <i class="fad fa-folder-open text-xs mr-2"></i>
         file manager
       </a>
-      <!-- end link -->   
+      <!-- end link -->  
+      {% endif %} 
 
     </div>
     <!-- end sidebar content -->
@@ -204,65 +206,118 @@
 
 
     <!-- Browser Stats -->
+    {% if  'POST' not in request.session.user.type.acces %}
     <div class="card">
         <div class="card-header">Nouveau compte</div>
 
         {% comment %} FORMULAIRE {% endcomment %}
+        
+        <div class="card-body px-4 py-5 px-md-5">
+            {% comment %} <h3 class="card-title text-center">Connexion</h3> {% endcomment %}
+          <form action="/accounts/save" method="POST">{% csrf_token %}
+
+            <!-- Email input -->
+            {% comment %} <div class="form-outline mb-4">
+              <textArea type="text" id="form3Example3" class="form-control px-5" style="border:1px solid #cccccc;height:100px;border-radius:10px;width:100%" name="text" placeholder="avis" required>texte de votre avis</textArea>
+            </div> {% endcomment %}
+
+            <div class="form-outline mb-4">
+                <input type="text"  id="form3Example3" class="form-control px-5" style="border:1px solid #cccccc;height:40px;border-radius:10px;width:100%" name="fullname" placeholder="Nom complet" required/>
+                {% comment %} <label class="form-label" for="form3Example3">Email address</label> {% endcomment %}
+            </div>
+
+            <div class="form-outline mb-4">
+                <input type="text"  id="form3Example3" class="form-control px-5" style="border:1px solid #cccccc;height:40px;border-radius:10px;width:100%" name="passwd" placeholder="mot depasse" required/>
+                {% comment %} <label class="form-label" for="form3Example3">Email address</label> {% endcomment %}
+            </div>
+
+            <div class="form-outline mb-4">
+                <input type="text" id="form3Example3" class="form-control px-5" style="border:1px solid #cccccc;height:40px;border-radius:10px;width:100%" name="country" placeholder="Pays" required/>
+                {% comment %} <label class="form-label" for="form3Example3">Email address</label> {% endcomment %}
+            </div>
+
+            {% comment %} <div class="form-outline mb-4">
+                <select name='gender' class="" style="border:1px solid #cccccc;height:40px;border-radius:10px;width:100%">
+                    <option value="M" selected>Homme</option>
+                    <option value="F" selected>Femme</option>
+                </select>
+            </div> {% endcomment %}
+
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary btn-block mb-4" style="width:100%;">
+              Enregistrer
+            </button>
+
+            <!-- Register buttons -->
+          </form>
+        </div>
+
+        {% comment %} FORMULAIRE {% endcomment %}
 
     </div>
+    {% endif %}
     <!-- end Browser Stats -->
 
     <!-- Start Recent Sales -->
-    <div class="card col-span-2 xl:col-span-1">
-        <div class="card-header">Liste des comptes</div>
+    <div class="card col-span-{% if  'POST' not in request.session.user.type.acces %}2{% else %}3{% endif %} xl:col-span-1">
+        <div class="card-header">Liste des Comptes</div>
 
         <table class="table-auto w-full text-left">
             <thead>
+                {% if 'POST' in request.session.user.type.acces %}
                 <tr>
-                    <th class="px-4 py-2 border-r"></th>
-                    <th class="px-4 py-2 border-r">product</th>
-                    <th class="px-4 py-2 border-r">price</th>
-                    <th class="px-4 py-2">date</th>
+                    <th class="px-4 py-2 border-r">Nom</th>
+                    <th class="px-4 py-2 border-r">E-mail</th>
+                    <th class="px-4 py-2 border-r">Mot de passe</th>
+                    <th class="px-4 py-2">Pays</th>
                 </tr>
+                {% elif 'ALL' in request.session.user.type.acces %}
+                <tr>
+                    <th class="px-4 py-2 border-r">Nom</th>
+                    <th class="px-4 py-2 border-r">E-mail</th>
+                    <th class="px-4 py-2 border-r">Mot de passe</th>
+                    <th class="px-4 py-2">Pays</th>
+                    <th class="px-4 py-2 border-r">Etat</th>
+                </tr>
+                {% else %}
+                <tr>
+                    <th class="px-4 py-2 border-r">Etat</th>
+                    <th class="px-4 py-2 border-r">Nom</th>
+                    <th class="px-4 py-2 border-r">E-mail</th>
+                    <th class="px-4 py-2">Pays</th>
+                </tr>
+                {% endif %}
             </thead>
             <tbody class="text-gray-600">
-
-                <tr>                    
-                    <td class="border border-l-0 px-4 py-2 text-center text-green-500"><i class="fad fa-circle"></i></td>
-                    <td class="border border-l-0 px-4 py-2">Lightning to USB-C Adapter Lightning.</td>
-                    <td class="border border-l-0 px-4 py-2">$<span class="num-2"></span></td>
-                    <td class="border border-l-0 border-r-0 px-4 py-2"><span class="num-2"></span> minutes ago</td>
-                </tr>
-                <tr>                    
-                    <td class="border border-l-0 px-4 py-2 text-center text-yellow-500"><i class="fad fa-circle"></i></td>
-                    <td class="border border-l-0 px-4 py-2">Apple iPhone 8.</td>
-                    <td class="border border-l-0 px-4 py-2">$<span class="num-2"></span></td>
-                    <td class="border border-l-0 border-r-0 px-4 py-2"><span class="num-2"></span> minutes ago</td>
-                </tr>
-                <tr>                    
-                    <td class="border border-l-0 px-4 py-2 text-center text-green-500"><i class="fad fa-circle"></i></td>
-                    <td class="border border-l-0 px-4 py-2">Apple MacBook Pro.</td>
-                    <td class="border border-l-0 px-4 py-2">$<span class="num-2"></span></td>
-                    <td class="border border-l-0 border-r-0 px-4 py-2"><span class="num-2"></span> minutes ago</td>
-                </tr>
-                <tr>                    
-                    <td class="border border-l-0 px-4 py-2 text-center text-red-500"><i class="fad fa-circle"></i></td>
-                    <td class="border border-l-0 px-4 py-2">Samsung Galaxy S9.</td>
-                    <td class="border border-l-0 px-4 py-2">$<span class="num-2"></span></td>
-                    <td class="border border-l-0 border-r-0 px-4 py-2"><span class="num-2"></span> minutes ago</td>
-                </tr>
-                <tr>                    
-                    <td class="border border-l-0 px-4 py-2 text-center text-yellow-500"><i class="fad fa-circle"></i></td>
-                    <td class="border border-l-0 px-4 py-2">Samsung Galaxy S8 256GB.</td>
-                    <td class="border border-l-0 px-4 py-2">$<span class="num-2"></span></td>
-                    <td class="border border-l-0 border-r-0 px-4 py-2"><span class="num-2"></span> minutes ago</td>
-                </tr>
-                <tr>                    
-                    <td class="border border-l-0 border-b-0 px-4 py-2 text-center text-green-500"><i class="fad fa-circle"></i></td>
-                    <td class="border border-l-0 border-b-0 px-4 py-2">apple watch.</td>
-                    <td class="border border-l-0 border-b-0 px-4 py-2">$<span class="num-2"></span></td>
-                    <td class="border border-l-0 border-b-0 border-r-0 px-4 py-2"><span class="num-2"></span> minutes ago</td>
-                </tr>
+                {% if 'POST' in request.session.user.type.acces %}
+                    {% for tx in user_accounts %}
+                    <tr>                    
+                        <td class="border border-l-0 px-4 py-2">{{ tx.fullName }}</td>
+                        <td class="border border-l-0 px-4 py-2">{{tx.email}}<span class=""></span></td>
+                        <td class="border border-l-0 px-4 py-2 text-center text-{% if tx.isOccupy %}red{% else %}green{% endif %}-500">{{ tx.passwd }}</td>
+                        <td class="border border-l-0 border-r-0 px-4 py-2"><span class=""></span> {{ tx.country }}</td>
+                    </tr>
+                    {% endfor %}
+                {% elif 'ALL' in request.session.user.type.acces %}
+                    {% for tx in accounts %}
+                    <tr>                    
+                        <td class="border border-l-0 px-4 py-2">{{ tx.fullName }}</td>
+                        <td class="border border-l-0 px-4 py-2">{{tx.email}}<span class=""></span></td>
+                        <td class="border border-l-0 px-4 py-2 text-center text-{% if tx.isOccupy %}red{% else %}green{% endif %}-500">{{ tx.passwd }}</td>
+                        <td class="border border-l-0 border-r-0 px-4 py-2"><span class=""></span> {{ tx.country }}</td>
+                        <td class="border border-l-0 px-4 py-2 text-center text-{% if tx.isOccupy %}red{% else %}green{% endif %}-500"><i class="fad fa-circle"></i></td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    {% for tx in accounts %}
+                    <tr>                    
+                        <td class="border border-l-0 px-4 py-2 text-center text-{% if tx.isOccupy %}red{% else %}green{% endif %}-500"><i class="fad fa-circle"></i></td>
+                        <td class="border border-l-0 px-4 py-2">{{ tx.fullName }}</td>
+                        <td class="border border-l-0 px-4 py-2">{{tx.email}}<span class=""></span></td>
+                        <td class="border border-l-0 border-r-0 px-4 py-2"><span class=""></span> {{ tx.country }}</td>
+                    </tr>
+                    {% endfor %}
+                {% endif %}
                 
             </tbody>
         </table>
