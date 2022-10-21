@@ -40,6 +40,9 @@ def home(request):
     # )
     return render(request, 'index.html')
 
+def get_current_session():
+    return Session.objects.all().order_by('-startDate').first()
+
 def get_objects(request):
     return{
         'users':User.objects.all(),
@@ -48,7 +51,7 @@ def get_objects(request):
         'texts':Content.objects.all(),
         'usertypes':UserType.objects.all(),
         'posters':User.objects.filter(type=1),
-        'unassigned_texts':Content.objects.filter(isUsed=False),
+        'unassigned_texts':Content.objects.filter(isUsed=False,session=get_current_session().id),
         'unassigned_accounts':Account.objects.filter(isOccupy=False),
         'current_session':Session.objects.all().order_by('-startDate').first(),
         'user_posts':Post.objects.filter(user=int(request.session['user']['id'])),
@@ -70,6 +73,7 @@ def poster_save(request):
         passwd=request.POST.get('passwd'),
         type=UserType.objects.get(id=1),
     )
+    return redirect('dashboard')
 
 def login(request):
     e=request.POST.get('email')
@@ -98,9 +102,9 @@ def login(request):
     except:return render(request,'index.html',{'msg':'E-mail ou mot de passe invalide!'})
 
 def dashboard(request):
-    Session.objects.create(
-        startDate=datetime.date.today()
-    )
+    # Session.objects.create(
+    #     startDate=datetime.date.today()
+    # )
     return render(request,'dashboard/index.html',get_objects(request))
 
 def acounts(request):
