@@ -10,5 +10,10 @@ urlpatterns = [
 
     #DASHBOARD
     path('login',views.login,name="login"),
-    path('dashboard',views.dashboard,name='dashboard')
+    path('dashboard',views.dashboard,name='dashboard'),
+    path('accounts',views.acounts,name="acounts"),
+    path('contents',views.contents,name="contents"),
+
+    #CONTENTS
+    path('contents/save',views.save_content),
 ]

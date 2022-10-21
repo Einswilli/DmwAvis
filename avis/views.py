@@ -38,6 +38,21 @@ def home(request):
     # )
     return render(request, 'index.html')
 
+def get_objects(request):
+    return{
+        'users':User.objects.all(),
+        'posts':Post.objects.all(),
+        'account':Account.objects.all(),
+        'texts':Content.objects.all(),
+        'usertypes':UserType.objects.all(),
+        'unassigned_texts':Content.objects.filter(isUsed=False),
+        'unassigned_accounts':Account.objects.filter(isOccupy=False),
+        'current_session':Session.objects.all().order_by('-startDate').first(),
+        'user_posts':Post.objects.filter(user=int(request.session['user']['id'])),
+        'user_texts':Content.objects.filter(user=int(request.session['user']['id'])),
+        'user_accounts':Account.objects.filter(assignedTo=int(request.session['user']['id'])),
+    }
+
 def poster_register(request):
     return render(request,'register.html')
 
@@ -50,7 +65,7 @@ def poster_save(request):
         email=request.POST.get('email'),
         telephone=request.POST.get('telephone'),
         passwd=request.POST.get('passwd'),
-        type=UserType.objects.get(id=int(request.POST.get('type'))),
+        type=UserType.objects.get(id=1),
     )
 
 def login(request):
@@ -76,9 +91,25 @@ def login(request):
             request.session['user']=usr
             request.session.modified=True
             return redirect('dashboard')
+        return render(request,'index.html',{'msg':'E-mail ou mot de passe invalide!'})
     except:return render(request,'index.html',{'msg':'E-mail ou mot de passe invalide!'})
 
 def dashboard(request):
-    return render(request,'dashboard/index.html')
+    return render(request,'dashboard/index.html',get_objects(request))
+
+def acounts(request):
+    return render(request,'dashboard/comptes.html',get_objects(request))
+
+def contents(request):
+    return render(request,'dashboard/textes.html',get_objects(request))
+
+def save_content(request):
+    Content.objects.create(
+        ContentText=request.POST.get('text'),
+        stars=int(request.POST.get('stars')),
+        #gender=request.POST.get('gender')
+    )
+    return redirect('contents')
+
 
 

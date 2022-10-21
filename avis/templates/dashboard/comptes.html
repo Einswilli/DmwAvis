@@ -37,7 +37,7 @@
       <!-- end link -->
 
       <!-- link -->
-      <a href="/accounts" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
+      <a href="/accounts" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500 active">
         <i class="fad fa-shield-check text-xs mr-2"></i>
         Comptes
       </a>
@@ -195,37 +195,26 @@
     
 
 </div>
-    <!-- end Analytics -->
+    
 
+    <!-- end nmbers -->
 
     <!-- start quick Info -->
-    <div class="grid grid-cols-2 gap-6 mt-6 xl:grid-cols-1">
+    <div class="grid grid-cols-3 gap-6 mt-6 xl:grid-cols-1">
 
 
     <!-- Browser Stats -->
     <div class="card">
-        <div class="card-header">Textes disponibles </div>
+        <div class="card-header">Nouveau compte</div>
 
-        {% for tx in unassigned_texts %}
-        <!-- brawser -->
-        <div class="p-6 flex flex-row justify-between items-center text-gray-600 border-b">
-            <div class="flex items-center">
-                <i class="fab fa-file mr-4"></i>    
-                <h1>{{ tx.truncate }}</h1>
-            </div>                
-            <div>
-                <a class="num-2 btn btn-success">prendre</a>
-            </div>
-        </div>
-        <!-- end brawser -->
-        {% endfor %}
+        {% comment %} FORMULAIRE {% endcomment %}
 
     </div>
     <!-- end Browser Stats -->
 
     <!-- Start Recent Sales -->
-    <div class="card col-span-1 xl:col-span-1">
-        <div class="card-header">Comptes disponibles</div>
+    <div class="card col-span-2 xl:col-span-1">
+        <div class="card-header">Liste des comptes</div>
 
         <table class="table-auto w-full text-left">
             <thead>
