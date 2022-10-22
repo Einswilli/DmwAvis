@@ -50,7 +50,6 @@
         Postes
       </a>
       <!-- end link -->
-
       {% if  'ALL' in request.session.user.type.acces %}
       <!-- link -->
       <a href="/users" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
@@ -60,12 +59,12 @@
       <!-- end link -->
 
       <!-- link -->
-      <a href="#" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
+      <a href="#" class=" capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
         <i class="fad fa-folder-open text-xs mr-2"></i>
         file manager
       </a>
-      <!-- end link -->   
-      {% endif %}
+      <!-- end link -->  
+      {% endif %} 
 
     </div>
     <!-- end sidebar content -->
@@ -196,6 +195,10 @@
     </div>
     <!-- end card -->
     
+{% comment %} 
+</div>
+    <!-- end card --> {% endcomment %}
+    
 
 </div>
     
@@ -209,31 +212,35 @@
     <!-- Browser Stats -->
     {% if  'POST' not in request.session.user.type.acces %}
     <div class="card">
-        <div class="card-header">Nouveau Texte </div>
+        <div class="card-header">Nouveau compte</div>
 
         {% comment %} FORMULAIRE {% endcomment %}
+        
         <div class="card-body px-4 py-5 px-md-5">
             {% comment %} <h3 class="card-title text-center">Connexion</h3> {% endcomment %}
-          <form action="/contents/save" method="POST">{% csrf_token %}
-
-            <!-- Email input -->
-            <div class="form-outline mb-4">
-              <textArea type="text" id="form3Example3" class="form-control px-5" style="border:1px solid #cccccc;height:100px;border-radius:10px;width:100%" name="text" placeholder="avis" required>texte de votre avis</textArea>
-              {% comment %} <label class="form-label" for="form3Example3">Email address</label> {% endcomment %}
-            </div>
+          <form action="/posts/save" method="POST">{% csrf_token %}
 
             <div class="form-outline mb-4">
-                <input type="number" min value="1" value"3" id="form3Example3" class="form-control px-5" style="border:1px solid #cccccc;height:40px;border-radius:10px;width:100%" name="stars" placeholder="Nombre d'étoiles" required/>
-                {% comment %} <label class="form-label" for="form3Example3">Email address</label> {% endcomment %}
-            </div>
-
-            <div class="form-outline mb-4">
-                <select name='gender' class="" style="border:1px solid #cccccc;height:40px;border-radius:10px;width:100%">
-                    <option value="M" selected>Homme</option>
-                    <option value="F" selected>Femme</option>
+                <select name='content' class="" style="border:1px solid #cccccc;height:40px;border-radius:10px;width:100%">
+                    <option disabled selected>Choisir un texte</option>
+                    {% for x in user_texts %}
+                    <option value="{{x.id}}" selected>{{ x.truncate }}</option>
+                    {% endfor %}
                 </select>
-                {% comment %} <input type="text" id="form3Example3" class="form-control px-5"  name="email" placeholder="E-mail" required/> {% endcomment %}
-                {% comment %} <label class="form-label" for="form3Example3">Email address</label> {% endcomment %}
+            </div>
+
+            <div class="form-outline mb-4">
+                <select name='account' class="" style="border:1px solid #cccccc;height:40px;border-radius:10px;width:100%">
+                    <option disabled selected>Choisir un compte</option>
+                    {% for x in user_accounts %}
+                    <option value="{{x.id}}" selected>{{ x.fullName }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-outline mb-4">
+                <label class="form-label" for="form3Example3">Capture d'écran</label>
+                <input type="file" id="form3Example3" class="form-control px-5" style="border:1px solid #cccccc;height:40px;border-radius:10px;width:100%" name="shot" required/>
             </div>
 
             <!-- Submit button -->
@@ -245,40 +252,71 @@
           </form>
         </div>
 
+        {% comment %} FORMULAIRE {% endcomment %}
+
     </div>
     {% endif %}
     <!-- end Browser Stats -->
 
     <!-- Start Recent Sales -->
     <div class="card col-span-{% if  'POST' not in request.session.user.type.acces %}2{% else %}3{% endif %} xl:col-span-1">
-        <div class="card-header">Liste des textes</div>
+        <div class="card-header">Liste des Comptes</div>
 
         <table class="table-auto w-full text-left">
             <thead>
+                {% if 'POST' in request.session.user.type.acces %}
+                <tr>
+                    <th class="px-4 py-2 border-r">Noms</th>
+                    <th class="px-4 py-2 border-r">Comptes</th>
+                    <th class="px-4 py-2 border-r">Textes</th>
+                    <th class="px-4 py-2">Etats</th>
+                    <th class="px-4 py-2 border-r">Captures</th>
+                </tr>
+                {% elif 'ALL' in request.session.user.type.acces %}
+                <tr>
+                    <th class="px-4 py-2 border-r">Noms</th>
+                    <th class="px-4 py-2 border-r">Comptes</th>
+                    <th class="px-4 py-2 border-r">Textes</th>
+                    <th class="px-4 py-2">Etats</th>
+                    <th class="px-4 py-2 border-r">Captures</th>
+                </tr>
+                {% else %}
                 <tr>
                     <th class="px-4 py-2 border-r">Etat</th>
-                    <th class="px-4 py-2 border-r">Contenus</th>
-                    <th class="px-4 py-2 border-r">Etoiles</th>
-                    <th class="px-4 py-2">date</th>
+                    <th class="px-4 py-2 border-r">Nom</th>
+                    <th class="px-4 py-2 border-r">E-mail</th>
+                    <th class="px-4 py-2">Pays</th>
                 </tr>
+                {% endif %}
             </thead>
             <tbody class="text-gray-600">
                 {% if 'POST' in request.session.user.type.acces %}
-                    {% for tx in user_texts %}
+                    {% for tx in user_posts %}
                     <tr>                    
-                        <td class="border border-l-0 px-4 py-2 text-center text-{% if tx.isUsed %}red{% else %}green{% endif %}-500"><i class="fad fa-circle"></i></td>
-                        <td class="border border-l-0 px-4 py-2">{{ tx.ContentText }}</td>
-                        <td class="border border-l-0 px-4 py-2">{{tx.stars}}<span class=""></span></td>
-                        <td class="border border-l-0 border-r-0 px-4 py-2"><span class=""></span> minutes ago</td>
+                        <td class="border border-l-0 px-4 py-2">{{ tx.user.name }}</td>
+                        <td class="border border-l-0 px-4 py-2">{{tx.account.fullName}}<span class=""></span></td>
+                        <td class="border border-l-0 border-r-0 px-4 py-2"><span class=""></span> {{ tx.content.truncate }}</td>
+                        <td class="border border-l-0 px-4 py-2 text-center text-{% if tx.isRejected %}red{% elif tx.isValid %}green{% else %}blue{% endif %}-500"><i class="fad fa-circle"></i></td>
+                        <td class="border border-l-0 px-4 py-2 text-center text-{% if tx.isOccupy %}red{% else %}green{% endif %}-500"><img src="{{tx.shot.url}}" style="width:55px;"/></td>
+                    </tr>
+                    {% endfor %}
+                {% elif 'ALL' in request.session.user.type.acces %}
+                    {% for tx in posts %}
+                    <tr>                    
+                        <td class="border border-l-0 px-4 py-2">{{ tx.user.name }}</td>
+                        <td class="border border-l-0 px-4 py-2">{{tx.account.fullName}}<span class=""></span></td>
+                        <td class="border border-l-0 border-r-0 px-4 py-2"><span class=""></span> {{ tx.content.truncate }}</td>
+                        <td class="border border-l-0 px-4 py-2 text-center text-{% if tx.isRejected %}red{% elif tx.isValid %}green{% else %}blue{% endif %}-500"><i class="fad fa-circle"></i></td>
+                        <td class="border border-l-0 px-4 py-2 text-center text-{% if tx.isOccupy %}red{% else %}green{% endif %}-500"><img src="{{tx.shot.url}}" style="width:55px;"/></td>
                     </tr>
                     {% endfor %}
                 {% else %}
-                    {% for tx in texts %}
+                    {% for tx in session_posts %}
                     <tr>                    
-                        <td class="border border-l-0 px-4 py-2 text-center text-{% if tx.isUsed %}red{% else %}green{% endif %}-500"><i class="fad fa-circle"></i></td>
-                        <td class="border border-l-0 px-4 py-2">{{ tx.truncate }}</td>
-                        <td class="border border-l-0 px-4 py-2">{{tx.stars}}<span class=""></span></td>
-                        <td class="border border-l-0 border-r-0 px-4 py-2"><span class=""></span> minutes ago</td>
+                        <td class="border border-l-0 px-4 py-2 text-center text-{% if tx.id %}red{% else %}green{% endif %}-500"><i class="fad fa-circle"></i></td>
+                        <td class="border border-l-0 px-4 py-2">{{ tx.user.name }}</td>
+                        <td class="border border-l-0 px-4 py-2">{{tx.account.fullName}}<span class=""></span></td>
+                        <td class="border border-l-0 border-r-0 px-4 py-2"><span class=""></span> {{ tx.content.truncate }}</td>
                     </tr>
                     {% endfor %}
                 {% endif %}

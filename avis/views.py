@@ -41,7 +41,7 @@ def home(request):
     return render(request, 'index.html')
 
 def get_current_session():
-    return Session.objects.all().order_by('-startDate').first()
+    return Session.objects.all().order_by('-id').first()
 
 def get_objects(request):
     return{
@@ -51,12 +51,13 @@ def get_objects(request):
         'texts':Content.objects.all(),
         'usertypes':UserType.objects.all(),
         'posters':User.objects.filter(type=1),
-        'unassigned_texts':Content.objects.filter(isUsed=False,session=get_current_session().id),
         'unassigned_accounts':Account.objects.filter(isOccupy=False),
-        'current_session':Session.objects.all().order_by('-startDate').first(),
+        'current_session':Session.objects.all().order_by('-id').first(),
+        'session_posts':Post.objects.filter(session=get_current_session().id),
         'user_posts':Post.objects.filter(user=int(request.session['user']['id'])),
         'user_texts':Content.objects.filter(user=int(request.session['user']['id'])),
         'user_accounts':Account.objects.filter(assignedTo=int(request.session['user']['id'])),
+        'unassigned_texts':Content.objects.filter(isUsed=False,session=get_current_session().id),
     }
 
 def poster_register(request):
@@ -146,4 +147,10 @@ def assign_account(request):
     a.assign_user(request.session['user']['id'])
     return HttpResponse("ok")
 
+######################      POSTES
 
+def posts(request):
+    return render(request,'dashboard/postes.html',get_objects(request))
+
+def save_post(request):
+    pass

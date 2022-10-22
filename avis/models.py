@@ -84,6 +84,10 @@ class Account(models.Model):
         self.isOccupy=True
         self.save()
 
+    def supply_email(self,email):
+        self.email=email
+        self.save()
+
 
 ########
 ####        AVIS POSTÉS
@@ -94,4 +98,16 @@ class Post(models.Model):
     content=models.ForeignKey("Content",on_delete=models.CASCADE)
     account=models.ForeignKey("Account",on_delete=models.CASCADE)
     session=models.ForeignKey("Session",on_delete=models.CASCADE)
+    isValidated=models.BooleanField(default=False)
+    isRejected=models.BooleanField(default=False)
     shot=models.ImageField(null=True,blank=True)
+
+    def validate(self):
+        self.isValidated=True
+        self.isRejected=False
+        self.save()
+
+    def reject(self):
+        self.isValidated=False
+        self.isRejected=True
+        self.save()

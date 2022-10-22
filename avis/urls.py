@@ -13,6 +13,7 @@ urlpatterns = [
     path('dashboard',views.dashboard,name='dashboard'),
     path('accounts',views.acounts,name="accounts"),
     path('contents',views.contents,name="contents"),
+    path('posts',views.posts,name="posts"),
 
     #CONTENTS
     path('contents/save',views.save_content),
@@ -21,4 +22,7 @@ urlpatterns = [
     #ACCOUNTS
     path('accounts/save',views.account_save),
     path('account/add/',views.assign_account),
+
+    #POSTS
+    path('posts/save',views.save_post)
 ]
