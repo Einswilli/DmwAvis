@@ -97,7 +97,7 @@ class Post(models.Model):
     user=models.ForeignKey("User",on_delete=models.CASCADE,null=True,blank=True)
     content=models.ForeignKey("Content",on_delete=models.CASCADE)
     account=models.ForeignKey("Account",on_delete=models.CASCADE)
-    session=models.ForeignKey("Session",on_delete=models.CASCADE)
+    session=models.ForeignKey("Session",on_delete=models.CASCADE,null=True,blank=True)
     isValidated=models.BooleanField(default=False)
     isRejected=models.BooleanField(default=False)
     shot=models.ImageField(null=True,blank=True)

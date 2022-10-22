@@ -106,6 +106,7 @@ def dashboard(request):
     # Session.objects.create(
     #     startDate=datetime.date.today()
     # )
+    print(get_objects(request)['unassigned_texts'])
     return render(request,'dashboard/index.html',get_objects(request))
 
 def acounts(request):
@@ -120,6 +121,7 @@ def save_content(request):
     Content.objects.create(
         ContentText=request.POST.get('text'),
         stars=int(request.POST.get('stars')),
+        session=get_current_session()
         #gender=request.POST.get('gender')
     )
     return redirect('contents')

@@ -259,14 +259,14 @@
     <!-- end Browser Stats -->
 
     <!-- Start Recent Sales -->
-    <div class="card col-span-{% if  'POST' in request.session.user.type.acces %}2{% else %}3{% endif %} xl:col-span-1">
-        <div class="card-header">Liste des Comptes</div>
+    <div class="card col-span-{% if 'POST' in request.session.user.type.acces %}2{% else %}3{% endif %} xl:col-span-1">
+        <div class="card-header">Liste des postes</div>
 
         <table class="table-auto w-full text-left">
             <thead>
                 {% if 'POST' in request.session.user.type.acces %}
                 <tr>
-                    <th class="px-4 py-2 border-r">Noms</th>
+                    <th class="px-4 py-2 border-r">Nº</th>
                     <th class="px-4 py-2 border-r">Comptes</th>
                     <th class="px-4 py-2 border-r">Textes</th>
                     <th class="px-4 py-2">Etats</th>
@@ -293,7 +293,7 @@
                 {% if 'POST' in request.session.user.type.acces %}
                     {% for tx in user_posts %}
                     <tr>                    
-                        <td class="border border-l-0 px-4 py-2">{{ tx.user.name }}</td>
+                        <td class="border border-l-0 px-4 py-2">{{ tx.id }}</td>
                         <td class="border border-l-0 px-4 py-2">{{tx.account.fullName}}<span class=""></span></td>
                         <td class="border border-l-0 border-r-0 px-4 py-2"><span class=""></span> {{ tx.content.truncate }}</td>
                         <td class="border border-l-0 px-4 py-2 text-center text-{% if tx.isRejected %}red{% elif tx.isValid %}green{% else %}blue{% endif %}-500"><i class="fad fa-circle"></i></td>
