@@ -210,9 +210,9 @@
 
 
     <!-- Browser Stats -->
-    {% if  'POST' not in request.session.user.type.acces %}
+    {% if  'POST' in request.session.user.type.acces %}
     <div class="card">
-        <div class="card-header">Nouveau compte</div>
+        <div class="card-header">Nouveau poste</div>
 
         {% comment %} FORMULAIRE {% endcomment %}
         
@@ -259,7 +259,7 @@
     <!-- end Browser Stats -->
 
     <!-- Start Recent Sales -->
-    <div class="card col-span-{% if  'POST' not in request.session.user.type.acces %}2{% else %}3{% endif %} xl:col-span-1">
+    <div class="card col-span-{% if  'POST' in request.session.user.type.acces %}2{% else %}3{% endif %} xl:col-span-1">
         <div class="card-header">Liste des Comptes</div>
 
         <table class="table-auto w-full text-left">
