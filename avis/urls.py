@@ -25,6 +25,9 @@ urlpatterns = [
 
     #POSTS
     path('posts/save',views.save_post),
+
+    #USERS
+    path('users/save', views.save_user, name='usersave'),
     path('posts/validate/<int:id>',views.validate_post),
     path('posts/reject/<int:id>',views.reject_post)
 ]
