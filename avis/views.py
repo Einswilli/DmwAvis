@@ -40,6 +40,11 @@ def home(request):
     # )
     return render(request, 'index.html')
 
+def logout(request):
+    del request.session['user']
+    request.session.modified=True
+    return redirect('login')
+
 def get_current_session():
     return Session.objects.all().order_by('-id').first()
 
@@ -106,15 +111,20 @@ def dashboard(request):
     # Session.objects.create(
     #     startDate=datetime.date.today()
     # )
-    print(get_objects(request)['unassigned_texts'])
+    if 'user' not in request.session.keys():
+        return redirect('login')
     return render(request,'dashboard/index.html',get_objects(request))
 
 def acounts(request):
+    if 'user' not in request.session.keys():
+        return redirect('login')
     return render(request,'dashboard/comptes.html',get_objects(request))
 
 ############################    CONTENTS
 
 def contents(request):
+    if 'user' not in request.session.keys():
+        return redirect('login')
     return render(request,'dashboard/textes.html',get_objects(request))
 
 def save_content(request):
@@ -152,6 +162,8 @@ def assign_account(request):
 ######################      POSTES
 
 def posts(request):
+    if 'user' not in request.session.keys():
+        return redirect('login')
     return render(request,'dashboard/postes.html',get_objects(request))
 
 def save_post(request):
