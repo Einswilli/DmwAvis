@@ -24,5 +24,7 @@ urlpatterns = [
     path('account/add/',views.assign_account),
 
     #POSTS
-    path('posts/save',views.save_post)
+    path('posts/save',views.save_post),
+    path('posts/validate',views.validate_post),
+    path('posts/reject',views.reject_post)
 ]

@@ -464,6 +464,24 @@ closeModal();
   </div>
   <!-- end content -->
 
+  {% comment %} SCRIPTS {% endcomment %}
+  <script>
+    var vs=document.querySelectorAll('.val')    //BOUTTONS DE VALIDATIONS
+    var rs=document.querySelectorAll('.rej')    //BOUTTONS DE REJECTS
+
+    for(let item of vs) {
+        item.addEventListener('click',function(){
+
+        })
+    }
+    for(let item of rs){
+        item.addEventListener('click',function(){
+            
+        })
+    }
+  </script>
+  {% comment %} FIN SCRIPTS {% endcomment %}
+
 </div>
 <!-- end wrapper -->
 {% endblock content %}

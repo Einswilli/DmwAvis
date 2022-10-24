@@ -164,3 +164,11 @@ def save_post(request):
         shot=request.FILES.get('shot')
     )
     return redirect('posts')
+
+@csrf_exempt
+def validate_post(request):
+    pass
+
+@csrf_exempt
+def reject_post(request):
+    pass
