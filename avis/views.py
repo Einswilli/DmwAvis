@@ -166,9 +166,11 @@ def save_post(request):
     return redirect('posts')
 
 @csrf_exempt
-def validate_post(request):
-    pass
+def validate_post(request,id):
+    p=Post.objects.get(id=id).validate()
+    return redirect('posts')
 
 @csrf_exempt
-def reject_post(request):
-    pass
+def reject_post(request,id):
+    p=Post.objects.get(id=id).validate()
+    return redirect('posts')

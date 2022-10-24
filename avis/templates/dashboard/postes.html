@@ -367,12 +367,18 @@
                             <a class="btn btn-info show-modal" type="button" data-toggle="modal" data-target="#img{{tx.id}}" title="voir la capture d'écran" style="width:30%">
                                 <i class="fad fa-circle"></i>
                             </a>
-                            <a class="btn btn-success" title="valider le poste" style="width:30%">
+                            {% if tx.isValidated %}
+                            Validé
+                            {% elif tx.isRejected %}
+                            Rejeté
+                            {% else %}
+                            <a href="/posts/validate/{{tx.id}}" class="btn btn-success val" title="valider le poste" id="v{{tx.id}}" data-num="{{tx.id}}" style="width:30%">
                                 <i class="fad fa-circle"></i>
                             </a>
-                            <a class="btn btn-danger" title="rejeter le poste" style="width:30%">
+                            <a href="/posts/reject/{{tx.id}}" class="btn btn-danger rej" title="rejeter le poste" id="r{{tx.id}}" data-num="{{tx.id}}" style="width:30%">
                                 <i class="fad fa-circle"></i>
                             </a>
+                            {{tx.id}}
                         </td>
                     </tr>
                     {% endfor %}
@@ -417,21 +423,41 @@
   <!-- end content -->
 
   {% comment %} SCRIPTS {% endcomment %}
-  <script>
+  {% comment %} <script>
     var vs=document.querySelectorAll('.val')    //BOUTTONS DE VALIDATIONS
     var rs=document.querySelectorAll('.rej')    //BOUTTONS DE REJECTS
 
     for(let item of vs) {
         item.addEventListener('click',function(){
-
+            $.ajax({
+                type:"POST",
+                url: "/posts/validate",
+                data:{
+                    id: item.id.replace('v','')
+                },
+                success: function( data ){
+                    console.log(data);
+                    $('#par'+item.id.replace('bta','')).remove()
+                }
+            })
         })
     }
     for(let item of rs){
         item.addEventListener('click',function(){
-            
+            $.ajax({
+                type:"POST",
+                url: "/posts/reject",
+                data:{
+                        id: item.id.replace('r','')
+                },
+                success: function( data ){
+                    console.log(data);
+                    $('#par'+item.id.replace('bta','')).remove()
+                }
+            })
         })
     }
-  </script>
+  </script> {% endcomment %}
   {% comment %} FIN SCRIPTS {% endcomment %}
 
 </div>
