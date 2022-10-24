@@ -10,7 +10,7 @@ urlpatterns = [
 
     #DASHBOARD
     path('login',views.login,name="login"),
-    path('login',views.logout,name="logout"),
+    path('logout',views.logout,name="logout"),
     path('dashboard',views.dashboard,name='dashboard'),
     path('accounts',views.acounts,name="accounts"),
     path('contents',views.contents,name="contents"),
