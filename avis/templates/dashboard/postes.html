@@ -2,6 +2,7 @@
 {% extends 'dashboard/base.html' %}
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}">
+<script src="{% static 'assets/js/bootstrap.min.css' %}"></script>
 {% block content %}
   <!-- strat wrapper -->
   <div class="h-screen flex flex-row flex-wrap">
@@ -282,10 +283,10 @@
                 </tr>
                 {% else %}
                 <tr>
-                    <th class="px-4 py-2 border-r">Etat</th>
-                    <th class="px-4 py-2 border-r">Nom</th>
-                    <th class="px-4 py-2 border-r">E-mail</th>
-                    <th class="px-4 py-2">Pays</th>
+                    <th class="px-4 py-2 border-r">Noms</th>
+                    <th class="px-4 py-2 border-r">Comptes</th>
+                    <th class="px-4 py-2 border-r">Textes</th>
+                    <th class="px-4 py-2 ">Actions</th>
                 </tr>
                 {% endif %}
             </thead>
@@ -313,10 +314,21 @@
                 {% else %}
                     {% for tx in session_posts %}
                     <tr>                    
-                        <td class="border border-l-0 px-4 py-2 text-center text-{% if tx.id %}red{% else %}green{% endif %}-500"><i class="fad fa-circle"></i></td>
-                        <td class="border border-l-0 px-4 py-2">{{ tx.user.name }}</td>
+                        <td class="border border-l-0 px-4 py-2">{{ tx.user.fname }} {{ tx.user.lname }}</td>
                         <td class="border border-l-0 px-4 py-2">{{tx.account.fullName}}<span class=""></span></td>
                         <td class="border border-l-0 border-r-0 px-4 py-2"><span class=""></span> {{ tx.content.truncate }}</td>
+                        <td class="border border-l-0 px-4 py-2 text-center text-{% if tx.id %}red{% else %}green{% endif %}-500" 
+                        style="display:flex;justify-content:space-between">
+                            <a class="btn btn-info" type="button" data-toggle="modal" data-target="#img{{tx.id}}" title="voir la capture d'écran" style="width:30%">
+                                <i class="fad fa-circle"></i>
+                            </a>
+                            <a class="btn btn-success" title="valider le poste" style="width:30%">
+                                <i class="fad fa-circle"></i>
+                            </a>
+                            <a class="btn btn-danger" title="rejeter le poste" style="width:30%">
+                                <i class="fad fa-circle"></i>
+                            </a>
+                        </td>
                     </tr>
                     {% endfor %}
                 {% endif %}
@@ -324,6 +336,30 @@
             </tbody>
         </table>
     </div>
+    {% comment %} POPUPS {% endcomment %}
+    {% for tx in session_posts %}
+    <!-- Modal -->
+    <div id="img{{tx.id}}" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+    
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+            <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    
+        </div>
+    </div>
+    {% endfor %}
+    {% comment %} FIN POPUPS {% endcomment %}
     <!-- End Recent Sales -->
 
 

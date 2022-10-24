@@ -46,11 +46,11 @@ def get_current_session():
 def get_objects(request):
     return{
         'users':User.objects.all(),
-        'posts':Post.objects.all(),
-        'accounts':Account.objects.all(),
-        'texts':Content.objects.all(),
         'usertypes':UserType.objects.all(),
         'posters':User.objects.filter(type=1),
+        'posts':Post.objects.all().order_by('-id'),
+        'texts':Content.objects.all().order_by('-id'),
+        'accounts':Account.objects.all().order_by('-id'),
         'unassigned_accounts':Account.objects.filter(isOccupy=False),
         'current_session':Session.objects.all().order_by('-id').first(),
         'session_posts':Post.objects.filter(session=get_current_session().id),
