@@ -2,6 +2,51 @@
 {% extends 'dashboard/base.html' %}
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}">
+<style>
+              
+    .close-modal {
+      position: absolute;
+      top: 1.2rem;
+      right: 2rem;
+      font-size: 2rem;
+      color: #333;
+      cursor: pointer;
+      border: none;
+      
+    }
+    
+    /* -------------------------- */
+    /* CLASSES TO MAKE MODAL WORK */
+    .hidden {
+      display: none;
+    }
+    
+    .modal {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 70%;
+    
+      background-color: white;
+      padding: 6rem;
+      border-radius: 5px;
+      box-shadow: 0 3rem 5rem rgba(0, 0, 0, 0.3);
+      z-index: 10;
+    }
+    
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(3px);
+      z-index: 5;
+    }
+    
+</style>
 <script src="{% static 'assets/js/bootstrap.min.css' %}"></script>
 {% block content %}
   <!-- strat wrapper -->
@@ -319,10 +364,10 @@
                         <td class="border border-l-0 border-r-0 px-4 py-2"><span class=""></span> {{ tx.content.truncate }}</td>
                         <td class="border border-l-0 px-4 py-2 text-center text-{% if tx.id %}red{% else %}green{% endif %}-500" 
                         style="display:flex;justify-content:space-between">
-                            <a class="btn btn-info" type="button" data-toggle="modal" data-target="#img{{tx.id}}" title="voir la capture d'écran" style="width:30%">
+                            <a class="btn btn-info show-modal" type="button" data-toggle="modal" data-target="#img{{tx.id}}" title="voir la capture d'écran" style="width:30%">
                                 <i class="fad fa-circle"></i>
                             </a>
-                            <a class="btn btn-success show-modal" title="valider le poste" style="width:30%">
+                            <a class="btn btn-success" title="valider le poste" style="width:30%">
                                 <i class="fad fa-circle"></i>
                             </a>
                             <a class="btn btn-danger" title="rejeter le poste" style="width:30%">
@@ -335,55 +380,17 @@
                 
             </tbody>
         </table>
-        <style>
-              
-            .close-modal {
-              position: absolute;
-              top: 1.2rem;
-              right: 2rem;
-              font-size: 2rem;
-              color: #333;
-              cursor: pointer;
-              border: none;
-              
-            }
-            
-            /* -------------------------- */
-            /* CLASSES TO MAKE MODAL WORK */
-            .hidden {
-              display: none;
-            }
-            
-            .modal {
-              position: absolute;
-              top: 50%;
-              left: 50%;
-              transform: translate(-50%, -50%);
-              width: 70%;
-            
-              background-color: white;
-              padding: 6rem;
-              border-radius: 5px;
-              box-shadow: 0 3rem 5rem rgba(0, 0, 0, 0.3);
-              z-index: 10;
-            }
-            
-            .overlay {
-              position: absolute;
-              top: 0;
-              left: 0;
-              width: 100%;
-              height: 100%;
-              background-color: rgba(0, 0, 0, 0.6);
-              backdrop-filter: blur(3px);
-              z-index: 5;
-            }
-            
-      </style>
-      <div class="valider">
-        <div class="modal hidden">
+        
+      
+    
+    </div>
+    {% comment %} POPUPS {% endcomment %}
+     {% for tx in session_posts %}
+    <!-- Modal -->
+    <div  class="valider">
+        <div id="img{{tx.id}}" class="modal hidden">
             <button class="close-modal">&times;</button>
-            <h1>I'm a modal window 😍</h1>
+            <h1>Image</h1>
             <p>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
             tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
@@ -396,63 +403,8 @@
         </div>
         <div class="overlay hidden"></div>
     </div>
-    <script type="text/javascript">
-        'use strict';
-
-const modal = document.querySelector('.modal');
-const overlay = document.querySelector('.overlay');
-const btnCloseModal = document.querySelector('.close-modal');
-const btnsOpenModal = document.querySelectorAll('.show-modal');
-
-const openModal = function () {
-modal.classList.remove('hidden');
-overlay.classList.remove('hidden');
-};
-
-const closeModal = function () {
-modal.classList.add('hidden');
-overlay.classList.add('hidden');
-};
-
-for (let i = 0; i < btnsOpenModal.length; i++) {
-btnsOpenModal[i].addEventListener('click', openModal);
-}
-
-btnCloseModal.addEventListener('click', closeModal);
-
-overlay.addEventListener('click', closeModal);
-
-document.addEventListener('keydown', function (e) {
-if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-closeModal();
-}
-});
-
-    </script>
-    </div>
-    {% comment %} POPUPS {% endcomment %}
-    {% comment %} {% for tx in session_posts %}
-    <!-- Modal -->
-    <div id="img{{tx.id}}" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-    
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Modal Header</h4>
-            </div>
-            <div class="modal-body">
-            <p>Some text in the modal.</p>
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    
-        </div>
-    </div>
-    {% endfor %} {% endcomment %}
+   
+    {% endfor %}
     {% comment %} FIN POPUPS {% endcomment %}
     <!-- End Recent Sales -->
 
@@ -484,4 +436,37 @@ closeModal();
 
 </div>
 <!-- end wrapper -->
+<script type="text/javascript">
+    'use strict';
+
+    const modal = document.querySelector('.modal');
+    const overlay = document.querySelector('.overlay');
+    const btnCloseModal = document.querySelector('.close-modal');
+    const btnsOpenModal = document.querySelectorAll('.show-modal');
+
+    const openModal = function () {
+    modal.classList.remove('hidden');
+    overlay.classList.remove('hidden');
+    };
+
+    const closeModal = function () {
+    modal.classList.add('hidden');
+    overlay.classList.add('hidden');
+    };
+
+    for (let i = 0; i < btnsOpenModal.length; i++) {
+    btnsOpenModal[i].addEventListener('click', openModal);
+    }
+
+    btnCloseModal.addEventListener('click', closeModal);
+
+    overlay.addEventListener('click', closeModal);
+
+    document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+    closeModal();
+    }
+    });
+
+</script>
 {% endblock content %}
