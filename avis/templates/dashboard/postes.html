@@ -322,7 +322,7 @@
                             <a class="btn btn-info" type="button" data-toggle="modal" data-target="#img{{tx.id}}" title="voir la capture d'écran" style="width:30%">
                                 <i class="fad fa-circle"></i>
                             </a>
-                            <a class="btn btn-success" title="valider le poste" style="width:30%">
+                            <a class="btn btn-success show-modal" title="valider le poste" style="width:30%">
                                 <i class="fad fa-circle"></i>
                             </a>
                             <a class="btn btn-danger" title="rejeter le poste" style="width:30%">
@@ -335,9 +335,103 @@
                 
             </tbody>
         </table>
+        <style>
+              
+            .close-modal {
+              position: absolute;
+              top: 1.2rem;
+              right: 2rem;
+              font-size: 2rem;
+              color: #333;
+              cursor: pointer;
+              border: none;
+              
+            }
+            
+            /* -------------------------- */
+            /* CLASSES TO MAKE MODAL WORK */
+            .hidden {
+              display: none;
+            }
+            
+            .modal {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              width: 70%;
+            
+              background-color: white;
+              padding: 6rem;
+              border-radius: 5px;
+              box-shadow: 0 3rem 5rem rgba(0, 0, 0, 0.3);
+              z-index: 10;
+            }
+            
+            .overlay {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background-color: rgba(0, 0, 0, 0.6);
+              backdrop-filter: blur(3px);
+              z-index: 5;
+            }
+            
+      </style>
+      <div class="valider">
+        <div class="modal hidden">
+            <button class="close-modal">&times;</button>
+            <h1>I'm a modal window 😍</h1>
+            <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+            veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+            commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+            velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+            occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+            mollit anim id est laborum.
+            </p>
+        </div>
+        <div class="overlay hidden"></div>
+    </div>
+    <script type="text/javascript">
+        'use strict';
+
+const modal = document.querySelector('.modal');
+const overlay = document.querySelector('.overlay');
+const btnCloseModal = document.querySelector('.close-modal');
+const btnsOpenModal = document.querySelectorAll('.show-modal');
+
+const openModal = function () {
+modal.classList.remove('hidden');
+overlay.classList.remove('hidden');
+};
+
+const closeModal = function () {
+modal.classList.add('hidden');
+overlay.classList.add('hidden');
+};
+
+for (let i = 0; i < btnsOpenModal.length; i++) {
+btnsOpenModal[i].addEventListener('click', openModal);
+}
+
+btnCloseModal.addEventListener('click', closeModal);
+
+overlay.addEventListener('click', closeModal);
+
+document.addEventListener('keydown', function (e) {
+if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+closeModal();
+}
+});
+
+    </script>
     </div>
     {% comment %} POPUPS {% endcomment %}
-    {% for tx in session_posts %}
+    {% comment %} {% for tx in session_posts %}
     <!-- Modal -->
     <div id="img{{tx.id}}" class="modal fade" role="dialog">
         <div class="modal-dialog">
@@ -358,7 +452,7 @@
     
         </div>
     </div>
-    {% endfor %}
+    {% endfor %} {% endcomment %}
     {% comment %} FIN POPUPS {% endcomment %}
     <!-- End Recent Sales -->
 
