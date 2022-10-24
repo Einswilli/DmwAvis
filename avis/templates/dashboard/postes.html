@@ -393,7 +393,7 @@
     {% comment %} POPUPS {% endcomment %}
      {% for tx in session_posts %}
     <!-- Modal -->
-    <div  class="valider">
+    {% comment %} <div  class="valider"> {% endcomment %}
         <div id="img{{tx.id}}" class="modal hidden">
             <button class="close-modal">&times;</button>
             <h1>Image</h1>
@@ -408,7 +408,7 @@
             </p>
         </div>
         <div class="overlay hidden"></div>
-    </div>
+    {% comment %} </div> {% endcomment %}
    
     {% endfor %}
     {% comment %} FIN POPUPS {% endcomment %}
