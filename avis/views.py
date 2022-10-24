@@ -155,4 +155,12 @@ def posts(request):
     return render(request,'dashboard/postes.html',get_objects(request))
 
 def save_post(request):
-    pass
+    
+    Post.objects.create(
+        user=User.objects.get(id=request.session['user']['id']),
+        content=Content.objects.get(id=int(request.POST.get('content'))),
+        account=Account.objects.get(id=int(request.POST.get('account'))),
+        session=get_current_session(),
+        shot=request.FILES.get('shot')
+    )
+    return redirect('posts')
