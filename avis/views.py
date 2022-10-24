@@ -176,3 +176,12 @@ def save_user(request):
         type=UserType.objects.get(id=1),
     )
     return redirect('login')
+@csrf_exempt
+def validate_post(request,id):
+    p=Post.objects.get(id=id).validate()
+    return redirect('posts')
+
+@csrf_exempt
+def reject_post(request,id):
+    p=Post.objects.get(id=id).validate()
+    return redirect('posts')
