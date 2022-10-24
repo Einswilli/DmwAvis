@@ -244,8 +244,8 @@
                 {% for tx in unassigned_accounts %}
                     <tr id="btcp{{tx.id}}">                    
                         <td class="border border-l-0 px-4 py-2">{{ tx.fullName }}</td>
-                        <td class="border border-l-0 px-4 py-2">{{tx.email}}<span class="num-2"></span></td>
-                        <td class="border border-l-0 border-r-1 px-4 py-2"><span class="num-2"></span> {{ tx.country }}</td>
+                        <td class="border border-l-0 px-4 py-2">{{tx.email}}<span class=""></span></td>
+                        <td class="border border-l-0 border-r-1 px-4 py-2"><span class=""></span> {{ tx.country }}</td>
                         <td class="border border-l-0 px-4 py-2 text-center" style="width:150px"><a class="btn btn-success btc" id='btc{{tx.id}}' style="width:100px">Ajouter</a></td>
                     </tr>
                 {% endfor %}
