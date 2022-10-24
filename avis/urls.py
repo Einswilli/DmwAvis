@@ -24,5 +24,8 @@ urlpatterns = [
     path('account/add/',views.assign_account),
 
     #POSTS
-    path('posts/save',views.save_post)
+    path('posts/save',views.save_post),
+
+    #USERS
+    path('users/save', views.save_user, name='usersave'),
 ]

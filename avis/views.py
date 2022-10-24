@@ -164,3 +164,15 @@ def save_post(request):
         shot=request.FILES.get('shot')
     )
     return redirect('posts')
+
+
+def save_user(request):
+    User.objects.create(
+        lname=request.POST.get('lname'),
+        fname=request.POST.get('fname'),
+        email=request.POST.get('email'),
+        telephone=request.POST.get('phone'),
+        passwd=request.POST.get('mdp'),
+        type=UserType.objects.get(id=1),
+    )
+    return redirect('login')
