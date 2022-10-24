@@ -364,13 +364,13 @@
                         <td class="border border-l-0 border-r-0 px-4 py-2"><span class=""></span> {{ tx.content.truncate }}</td>
                         <td class="border border-l-0 px-4 py-2 text-center text-{% if tx.id %}red{% else %}green{% endif %}-500" 
                         style="display:flex;justify-content:space-between">
-                            <a class="btn btn-info show-modal" type="button" data-toggle="modal" data-target="#img{{tx.id}}" title="voir la capture d'écran" style="width:30%">
+                            <a class="btn btn-info show-modal text-center" type="button" data-toggle="modal" data-target="#img{{tx.id}}" title="voir la capture d'écran" style="width:30%">
                                 <i class="fad fa-circle"></i>
                             </a>
                             {% if tx.isValidated %}
-                            Validé
+                            <p class="text-success">Validé</p>
                             {% elif tx.isRejected %}
-                            Rejeté
+                            <p class="text-danger">Rejeté</p>
                             {% else %}
                             <a href="/posts/validate/{{tx.id}}" class="btn btn-success val" title="valider le poste" id="v{{tx.id}}" data-num="{{tx.id}}" style="width:30%">
                                 <i class="fad fa-circle"></i>
@@ -396,16 +396,8 @@
     {% comment %} <div  class="valider"> {% endcomment %}
         <div id="img{{tx.id}}" class="modal hidden">
             <button class="close-modal">&times;</button>
-            <h1>Image</h1>
-            <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-            veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-            commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-            velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-            occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-            mollit anim id est laborum.
-            </p>
+            <h1>Capture d'écran</h1>
+            <img src="{{tx.shot.url}}"/>
         </div>
         <div class="overlay hidden"></div>
     {% comment %} </div> {% endcomment %}
