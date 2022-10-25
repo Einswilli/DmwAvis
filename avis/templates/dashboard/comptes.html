@@ -3,6 +3,14 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}">
 {% block content %}
+<style>
+    a {
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: none;
+    }
+</style>
   <!-- strat wrapper -->
   <div class="h-screen flex flex-row flex-wrap">
   
@@ -38,7 +46,7 @@
       <!-- end link -->
 
       <!-- link -->
-      <a href="/accounts" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500 active">
+      <a href="/accounts" class="liens mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500 active">
         <i class="fad fa-shield-check text-xs mr-2"></i>
         Comptes
       </a>
@@ -52,14 +60,14 @@
       <!-- end link -->
       {% if  'ALL' in request.session.user.type.acces %}
       <!-- link -->
-      <a href="/users" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
+      <a href="/users" style="text-decoration:none;" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
         <i class="fad fa-file-invoice-dollar text-xs mr-2"></i>
         Utilisateurs
       </a>
       <!-- end link -->
 
       <!-- link -->
-      <a href="#" class=" capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
+      <a href="#" class="liens capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
         <i class="fad fa-folder-open text-xs mr-2"></i>
         file manager
       </a>
@@ -126,7 +134,7 @@
 
                 <!-- bottom -->
                 <div class="mt-8">
-                    <h2 class="">{{current_session.code}}</h2>
+                    <h2 class="h6">{{current_session.code}}</h2>
                     <p>Session active</p>
                 </div>                
                 <!-- end bottom -->
@@ -265,8 +273,91 @@
     <!-- Start Recent Sales -->
     <div class="card col-span-{% if  'POST' not in request.session.user.type.acces %}2{% else %}3{% endif %} xl:col-span-1">
         <div class="card-header">Liste des Comptes</div>
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                {% if 'POST' in request.session.user.type.acces %}
+                <tr>
+                    <th>Nom</th>
+                    <th>E-mail</th>
+                    <th>Mot de passe</th>
+                    <th>Pays</th>
+                </tr>
+                {% elif 'ALL' in request.session.user.type.acces %}
+                <tr>
+                    <th>Nom</th>
+                    <th>E-mail</th>
+                    <th>Mot de passe</th>
+                    <th>Pays</th>
+                    <th>Etat</th>
+                </tr>
+                {% else %}
+                <tr>
+                    <th>Etat</th>
+                    <th>Nom</th>
+                    <th>E-mail</th>
+                    <th>Pays</th>
+                </tr>
+                {% endif %}
+            </thead>
+            <tbody>
+                {% if 'POST' in request.session.user.type.acces %}
+                    {% for tx in user_accounts %}
+                    <tr>                    
+                        <td>{{ tx.fullName }}</td>
+                        <td>{{tx.email}}<span class=""></span></td>
+                        <td class="text-center text-{% if tx.isOccupy %}red{% else %}green{% endif %}-500">{{ tx.passwd }}</td>
+                        <td><span class=""></span> {{ tx.country }}</td>
+                    </tr>
+                    {% endfor %}
+                {% elif 'ALL' in request.session.user.type.acces %}
+                    {% for tx in accounts %}
+                    <tr>                    
+                        <td>{{ tx.fullName }}</td>
+                        <td>{{tx.email}}<span class=""></span></td>
+                        <td class="text-center text-{% if tx.isOccupy %}red{% else %}green{% endif %}-500">{{ tx.passwd }}</td>
+                        <td><span class=""></span> {{ tx.country }}</td>
+                        <td class="text-center text-{% if tx.isOccupy %}red{% else %}green{% endif %}-500"><i class="fad fa-circle"></i></td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    {% for tx in accounts %}
+                    <tr>                    
+                        <td class="text-center text-{% if tx.isOccupy %}red{% else %}green{% endif %}-500"><i class="fad fa-circle"></i></td>
+                        <td>{{ tx.fullName }}</td>
+                        <td>{{tx.email}}<span class=""></span></td>
+                        <td> {{ tx.country }}</td>
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+            <tfoot>
+                {% if 'POST' in request.session.user.type.acces %}
+                <tr>
+                    <th>Nom</th>
+                    <th>E-mail</th>
+                    <th>Mot de passe</th>
+                    <th>Pays</th>
+                </tr>
+                {% elif 'ALL' in request.session.user.type.acces %}
+                <tr>
+                    <th>Nom</th>
+                    <th>E-mail</th>
+                    <th>Mot de passe</th>
+                    <th>Pays</th>
+                    <th>Etat</th>
+                </tr>
+                {% else %}
+                <tr>
+                    <th>Etat</th>
+                    <th>Nom</th>
+                    <th>E-mail</th>
+                    <th>Pays</th>
+                </tr>
+                {% endif %}
+            </tfoot>
+        </table>
 
-        <table class="table-auto w-full text-left">
+        {% comment %} <table class="table-auto w-full text-left">
             <thead>
                 {% if 'POST' in request.session.user.type.acces %}
                 <tr>
@@ -324,7 +415,7 @@
                 {% endif %}
                 
             </tbody>
-        </table>
+        </table> {% endcomment %}
     </div>
     <!-- End Recent Sales -->
 

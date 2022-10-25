@@ -1,7 +1,7 @@
 <!-- start navbar -->
 {% extends 'dashboard/base.html' %}
 {% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}">
+{% comment %} <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}"> {% endcomment %}
 {% block content %}
   <!-- strat wrapper -->
   <div class="h-screen flex flex-row flex-wrap">
@@ -127,7 +127,7 @@
 
                 <!-- bottom -->
                 <div class="mt-8">
-                    <h2 class="">{{current_session.code}}</h2>
+                    <h2 class="h6">{{current_session.code}}</h2>
                     <p>Session active</p>
                 </div>                
                 <!-- end bottom -->
@@ -208,6 +208,7 @@
     <!-- Browser Stats -->
     <div class="card">
         <div class="card-header">Textes disponibles </div>
+        
 
         {% for tx in unassigned_texts %}
         <!-- brawser -->
@@ -229,8 +230,35 @@
     <!-- Start Recent Sales -->
     <div class="card col-span-1 xl:col-span-1">
         <div class="card-header">Comptes disponibles</div>
-
-        <table class="table-auto w-full text-left">
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Pays</th>
+                    <th>Etat</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tx in unassigned_accounts %}
+                <tr>
+                    <td>{{ tx.fullName }}</td>
+                    <td>{{tx.email}}</td>
+                    <td>{{ tx.country }}</td>
+                    <td><a class="btn btn-primary btc" id='btc{{tx.id}}' style="width:100px">Ajouter</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Pays</th>
+                    <th>Etat</th>
+                </tr>
+            </tfoot>
+        </table>
+        {% comment %} <table class="table-auto w-full text-left">
             <thead>
                 <tr>
                     <th class="px-4 py-2 border-r">Nom</th>
@@ -251,7 +279,7 @@
                 {% endfor %}
                 
             </tbody>
-        </table>
+        </table> {% endcomment %}
     </div>
     <!-- End Recent Sales -->
 
@@ -299,5 +327,6 @@
             })
         })
     }
+    
 </script>
 {% endblock content %}
